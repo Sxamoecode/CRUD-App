@@ -3,7 +3,10 @@ const {data} = require('./data');
 const express = require('express');
 const res = require('express/lib/response');
 const app = express();
-let port = 3000;
+const port = 3000;
+const fs = require("fs");
+app.use(express.json()); // parse json bodies
+app.use(express.urlencoded({extended:true}));
 
 // testing my app
 app.get('/', function(req, res) {
@@ -20,7 +23,7 @@ app.get('/data/:id', function(req, res) {
     //Checking for data and returning it
     if (!single_data) {
         console.log("Data not found");
-        res.send("Data does not on server")
+        res.send("Data does not exist on server")
     }
     else {
         //console.log(single_data);
@@ -36,10 +39,10 @@ app.post('/data', function(req, res) {
     res.json(data);
 });
 //Update all properties of data and create in its absence
-app.put('/date/:id', function(req, res) {
+app.put('/data/:id', function(req, res) {
     // get req body
-    const create_data = req.body.create_data;
-    console.log(create_data);
+    const body = req.body;
+    console.log(body);
     //get data id from params
     const my_id = req.params.id;
     //Get data from database
@@ -53,27 +56,27 @@ app.put('/date/:id', function(req, res) {
     else
     {
         //Perform PUT method
-        const data_copy = [...data];
+        //const data_copy = [... data];
         //find index of item to be deleted
         const target_data = data.findIndex(d => d.id == my_id)
         console.log(target_data);
         //replace array with req body
-        data[target_data] = create_data;
+        data[target_data] = body;
         //Return data to user
         res.json(data[target_data])
     }
 })
 
-app.delete('/date/:id', function(req, res) {
+app.delete('/data/:id', function(req, res) {
     //get data id from req param
     const del_id = req.params.id;
     //Get data from database
     const delete_data = data.find(({id}) => id == del_id);
     //Check for data in db
     if (!delete_data) {
-        console.log("data not found");
-        res.send("data does not exist");
-        return;
+        console.log("data not found")
+        res.send("data does not exist")
+        return
     }
     const data_delete = data.filter(content => content.id != del_id);
     res.json(data_delete);
