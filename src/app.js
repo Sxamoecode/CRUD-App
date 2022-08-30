@@ -38,7 +38,7 @@ app.post('/data', function(req, res) {
 //Update all properties of data and create in its absence
 app.put('/date/:id', function(req, res) {
     // get req body
-    const create_data = req.create_data;
+    const create_data = req.body.create_data;
     console.log(create_data);
     //get data id from params
     const my_id = req.params.id;
@@ -55,7 +55,7 @@ app.put('/date/:id', function(req, res) {
         //Perform PUT method
         const data_copy = [...data];
         //find index of item to be deleted
-        const target_data = data.findIndex(d => id == my_id)
+        const target_data = data.findIndex(d => d.id == my_id)
         console.log(target_data);
         //replace array with req body
         data[target_data] = create_data;
