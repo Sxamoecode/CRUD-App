@@ -1,0 +1,7 @@
+Nice job.
+Ensure you maintain proper folder structures always.
+I love the fact that your code is properly commented. Great work there!
+
+Nice work with the error handling.
+
+You mistakenly pushed node modules to github. Remove that using .gitignore next time
